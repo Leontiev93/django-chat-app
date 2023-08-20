@@ -42,10 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    "corsheaders",
+    'rest_framework.authtoken',
+    'djoser',
+    'corsheaders',
+    'django_filters',
     'channels',
-    'chat',
-    'users',
+    'chat.apps.ChatConfig',  # Регистрируем приложение чат
+    'users.apps.UsersConfig',  # Регистрируем приложение users
+    'api.apps.ApiConfig',  # Регистрируем приложение api
 ]
 
 MIDDLEWARE = [
@@ -99,7 +103,17 @@ ASGI_APPLICATION = 'djangochat.asgi.application'
 #     }
 # }
 
-
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'HIDE_USERS': False,
+    'PERMISSIONS': {
+        'user_list': ['rest_framework.permissions.AllowAny'],
+        'password_reset': ['rest_framework.permissions.AllowAny'],
+        'user': ['rest_framework.permissions.AllowAny'],
+        'token_create': ['rest_framework.permissions.AllowAny'],
+        'token_destroy': ['djoser.permissions.CurrentUserOrAdmin'],
+    },
+}
 
 DATABASES = {
     'default': {

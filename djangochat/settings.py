@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'corsheaders',
-    'django_filters',
     'channels',
+    'django_filters',
     'chat.apps.ChatConfig',  # Регистрируем приложение чат
     'users.apps.UsersConfig',  # Регистрируем приложение users
     'api.apps.ApiConfig',  # Регистрируем приложение api
@@ -88,6 +88,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'djangochat.wsgi.application'
 
 ASGI_APPLICATION = 'djangochat.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

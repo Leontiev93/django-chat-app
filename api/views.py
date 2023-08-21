@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Q
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import reverse, get_resolver
 from django.http import HttpResponseRedirect
 
 from users.models import User
@@ -36,10 +36,10 @@ def start_convo(request, ):
     conversation = Conversation.objects.filter(Q(initiator=request.user, receiver=participant) |
                                                Q(initiator=participant, receiver=request.user))
     if conversation.exists():
-        x = args=(conversation[0].id)
-        print(x)
-
-        return redirect(reverse('get_conversation', args=(conversation[0].id,)))
+        x = conversation[0].id
+        return redirect(f'http://127.0.0.1:8000/api/conversations/{x}/')
+#        Функций reverse() выдает ошибку, необходимо разобратся в чем причина.
+#        return redirect(reverse('get_conversation', args=(conversation[0].id,))) 
     else:
         conversation = Conversation.objects.create(initiator=request.user, receiver=participant)
         return Response(ConversationSerializer(instance=conversation).data)
